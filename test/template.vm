@@ -1,0 +1,45 @@
+#parse("base.vm")
+#if(${inputData.data.packageName})
+package ${inputData.data.packageName};
+
+#end
+import com.clouter.pheromones.common.InterfaceInput;
+import com.clouter.pheromones.common.InterfaceOutput;
+
+/**
+#if($inputData.data.getProperty("desc"))
+ * $inputData.data.getProperty("desc")
+#end 
+ * @author pheromones
+ */
+#showClassName(${inputData.data.alias}, ${inputData.data.getProperty("parent")}, ${inputData.data.getProperty("interface")})
+#foreach($field in $inputData.data.fieldList)
+#if(${field.desc} && !${field.desc.empty})
+	/**${field.desc}*/
+#end
+	private #alias2SmallType(${field.alias})#if(${field.generic})<#alias2BigType(${field.generic})>#end ${field.name};
+#end
+
+	@Override
+	public void read(InterfaceInput input) throws Exception{
+#foreach($field in $inputData.data.fieldList)
+#readFunction($field)
+#end
+	}
+	
+	@Override
+	public void write(InterfaceOutput output) throws Exception{
+#foreach($field in $inputData.data.fieldList)
+#writeFunction($field)
+#end
+	}
+	
+#foreach($field in $inputData.data.fieldList)
+	public #alias2SmallType($field.alias)#if($field.generic)<#alias2BigType($field.generic)>#end get#upperCaseFirstChar($field.name)(){
+		return $field.name;
+	}
+	public void set#upperCaseFirstChar($field.name)(#alias2SmallType($field.alias)#if($field.generic)<#alias2BigType($field.generic)>#end $field.name){
+		this.${field.name} = ${field.name};
+	}
+#end
+}

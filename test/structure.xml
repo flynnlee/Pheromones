@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node alias="Base" visible="false">
+		<properties>
+			<property key="package" value="com.clouter.pheromones"/>
+<!-- 			<property key="package_path" value="com/clouter/pheromones/"/> -->
+			<!-- 项目内sourceFolder（可选，默认空字符串） -->
+			<property key="src_folder" value="test"/>
+			<property key="file_name" value="Base"/>
+		</properties>
+	</node>
+	<node alias="TmpClass1" baseAlias="Base" parent="java.util.concurrent.atomic.AtomicBoolean" interface="com.clouter.pheromones.common.INode" file_name="TmpClass1" desc="TmpClass1">
+		<field alias="TmpClass2" name="value0" desc=""/>
+		<field alias="list" generic="float" name="value1" desc=""/>
+		<field alias="list" generic="double" name="value2" desc=""/>
+		<field alias="list" generic="byte" name="value3" desc=""/>
+		<field alias="list" generic="short" name="value4" desc=""/>
+		<field alias="list" generic="int" name="value5" desc=""/>
+		<field alias="list" generic="long" name="value6" desc=""/>
+		<field alias="list" generic="string" name="value7" desc=""/>
+		<field alias="list" generic="TmpClass2" name="value8" desc="list value"/>
+		<field alias="list" generic="boolean" name="value9" desc=""/>
+	</node>
+	
+	<node alias="TmpClass2" baseAlias="Base" parent="" interface="com.clouter.pheromones.common.INode" file_name="TmpClass2">
+		<field alias="float" name="value0" desc="float value"/>
+		<field alias="double" name="value1" desc="double value"/>
+		<field alias="byte" name="value2" desc="byte value"/>
+		<field alias="short" name="value3" desc="short value"/>
+		<field alias="int" name="value4" desc="int value"/>
+		<field alias="long" name="value5" desc="long value"/>
+		<field alias="string" name="value6" desc="string value"/>
+		<field alias="boolean" name="value7" desc="boolean value"/>
+	</node>
+</nodes>

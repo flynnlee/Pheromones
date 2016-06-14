@@ -1,0 +1,126 @@
+#macro( upperCaseFirstChar $str)
+${str.substring(0, 1).toUpperCase()}${str.substring(1)}#end
+#macro( alias2SmallType $alias)
+#if($alias.equals("byte"))
+byte#elseif($alias.equals("boolean"))
+boolean#elseif($alias.equals("short"))
+short#elseif($alias.equals("int"))
+int#elseif($alias.equals("long"))
+long#elseif($alias.equals("float"))
+float#elseif($alias.equals("double"))
+double#elseif($alias.equals("string"))
+String#elseif($alias.equals("datetime"))
+java.util.Date#elseif($alias.equals("list"))
+java.util.List#else
+${inputData.globalData.getPheroNode($alias).packageName}.$alias#end
+#end
+#macro( alias2BigType $alias)
+#if($alias.equals("byte"))
+Byte#elseif($alias.equals("boolean"))
+Boolean#elseif($alias.equals("short"))
+Short#elseif($alias.equals("int"))
+Integer#elseif($alias.equals("long"))
+Long#elseif($alias.equals("float"))
+Float#elseif($alias.equals("double"))
+Double#elseif($alias.equals("string"))
+String#elseif($alias.equals("list"))
+java.util.List#else
+${inputData.globalData.getPheroNode($alias).packageName}.$alias#end
+#end
+#macro( readFunction $field)
+#if($field.alias.equals("byte"))
+		$field.name = input.readByte();
+#elseif($field.alias.equals("boolean"))
+		$field.name = input.readByte() != 0;
+#elseif($field.alias.equals("short"))
+		$field.name = input.readShort();
+#elseif($field.alias.equals("int"))
+		$field.name = input.readInt();
+#elseif($field.alias.equals("long"))
+		$field.name = input.readLong();
+#elseif($field.alias.equals("float"))
+		$field.name = input.readFloat();
+#elseif($field.alias.equals("double"))
+		$field.name = input.readDouble();
+#elseif($field.alias.equals("string"))
+		$field.name = input.readUTF();
+#elseif($field.alias.equals("list"))
+
+		$field.name = new java.util.ArrayList<#alias2BigType($field.generic)>();
+		short ${field.name}Length = input.readShort();
+		for(short i = 0; i < ${field.name}Length; i++){
+#if($field.generic.equals("byte"))
+			${field.name}.add(input.readByte());
+#elseif($field.generic.equals("boolean"))
+			${field.name}.add(input.readByte() != 0);
+#elseif($field.generic.equals("short"))
+			${field.name}.add(input.readShort());
+#elseif($field.generic.equals("int"))
+			${field.name}.add(input.readInt());
+#elseif($field.generic.equals("long"))
+			${field.name}.add(input.readLong());
+#elseif($field.generic.equals("float"))
+			${field.name}.add(input.readFloat());
+#elseif($field.generic.equals("double"))
+			${field.name}.add(input.readDouble());
+#elseif($field.generic.equals("string"))
+			${field.name}.add(input.readUTF());
+#else
+			#alias2BigType($field.generic) tmp = new #alias2BigType($field.generic)();
+			tmp.read(input);
+			${field.name}.add(tmp);
+#end
+		}
+#else
+		$field.name = new #alias2BigType($field.alias)();
+		${field.name}.read(input);
+#end
+#end
+#macro( writeFunction $field)
+#if($field.alias.equals("byte"))
+		output.writeByte($field.name);
+#elseif($field.alias.equals("boolean"))
+		output.writeByte($field.name ? (byte)1 : (byte)0);
+#elseif($field.alias.equals("short"))
+		output.writeShort($field.name);
+#elseif($field.alias.equals("int"))
+		output.writeInt($field.name);
+#elseif($field.alias.equals("long"))
+		output.writeLong($field.name);
+#elseif($field.alias.equals("float"))
+		output.writeFloat($field.name);
+#elseif($field.alias.equals("double"))
+		output.writeDouble($field.name);
+#elseif($field.alias.equals("string"))
+		output.writeUTF($field.name);
+#elseif($field.alias.equals("list"))
+
+		output.writeShort(${field.name}.size());
+		for(#alias2SmallType($field.generic) tmp : $field.name){
+#if($field.generic.equals("byte"))
+			output.writeByte(tmp);
+#elseif($field.generic.equals("boolean"))
+			output.writeByte(tmp ? (byte)1 : (byte)0);
+#elseif($field.generic.equals("short"))
+			output.writeShort(tmp);
+#elseif($field.generic.equals("int"))
+			output.writeInt(tmp);
+#elseif($field.generic.equals("long"))
+			output.writeLong(tmp);
+#elseif($field.generic.equals("float"))
+			output.writeFloat(tmp);
+#elseif($field.generic.equals("double"))
+			output.writeDouble(tmp);
+#elseif($field.generic.equals("string"))
+			output.writeUTF(tmp);
+#else
+			tmp.write(output);
+#end
+		}
+#else
+		${field.name}.write(output);
+#end
+#end
+#macro( showClassName $name $parent $interface )
+public class $name#if($parent && !$parent.empty) extends $parent#end#if($interface && !$interface.empty) implements $interface#end{
+#end
