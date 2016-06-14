@@ -3,7 +3,7 @@ package com.clouter.pheromones;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.clouter.clouterutil.FileUtil;
+import com.clouter.clouterutil.file.FileUtil;
 import com.clouter.clouterutil.velocity.ConverterParam;
 import com.clouter.clouterutil.velocity.VelocityConverter;
 import com.clouter.pheromones.node.PheroGlobalData;
