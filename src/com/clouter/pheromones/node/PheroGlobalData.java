@@ -14,7 +14,8 @@ import com.clouter.clouterutil.XmlUtil;
 import com.clouter.pheromones.exception.PheroNodeDuplicateAlias;
 
 /**
- * 全局数据
+ * 包含全局配置信息、
+ * PheroNode集合、筛选需要输出的PheroNode
  * @author flynn
  *
  */
@@ -28,16 +29,23 @@ public class PheroGlobalData {
 		return instance;
 	}
 	
+	/**
+	 * 清除已加载数据
+	 */
 	public static void clean(){
 		instance = new PheroGlobalData();
 	}
 
-	/**类描述集合*/
+	/**类描述集合，key为alias*/
 	private Map<String, PheroNode> nodeMapByAlias;
 	private PheroGlobalData(){
 		nodeMapByAlias = new HashMap<String, PheroNode>();
 	}
 	
+	/**
+	 * 添加一个PheroNode
+	 * @param node
+	 */
 	private void addNode(PheroNode node){
 		if(nodeMapByAlias.containsKey(node.getAlias())){
 			throw new PheroNodeDuplicateAlias(node.getAlias());
@@ -77,7 +85,7 @@ public class PheroGlobalData {
 	 */
 	public String getVmfile(){
 		String rt = getProperty("vm_file");
-		return rt == null ? 	"template.vm" : rt;
+		return rt == null ? "template.vm" : rt;
 	}
 	
 	/**
@@ -90,7 +98,8 @@ public class PheroGlobalData {
 	}
 	
 	/**
-	 * 根据名为nodes的Element加载类描述信息
+	 * 根据名为nodes的Element加载配置信息
+	 * 如果Element为引用文件，则读取文件，否则则解析Element为PheroNode
 	 * @param element
 	 */
 	public void load(Element element){
