@@ -19,8 +19,8 @@ public class PheromonesLauncher {
 	private static final Log log = LogFactory.getLog(PheromonesLauncher.class);
 	
 	/**
-	 * 入口
-	 * @param configFile - 配置文件绝对路径
+	 * 入口方法
+	 * @param configFile - 配置文件的绝对路径
 	 */
 	public void launch(String configFile){
 		//重新加载配置文件
@@ -30,10 +30,7 @@ public class PheromonesLauncher {
 		//读取生成文本相关配置
 		String encode = PheroGlobalData.getInstance().getProperty("encode");
 		String defaultVmFile = PheroGlobalData.getInstance().getVmfile();
-		String vmFileKey = PheroGlobalData.getInstance().getProperty("vmfile_key");
-		if(vmFileKey == null){
-			vmFileKey = "vm_file";
-		}
+		String vmFileKey = PheroGlobalData.getInstance().getProperty("vmfile_key", "vm_file");
 		//输出生成的文本文件
 		output(encode, defaultVmFile, vmFileKey);
 	}
@@ -45,10 +42,7 @@ public class PheromonesLauncher {
 			ConverterParam param = new ConverterParam();
 			param.setInputData(new PheromonesInputData(node));
 			param.setEncodeStr(encode);
-			String vmFile = node.getProperty(vmFileKey);
-			if(vmFile == null){
-				vmFile = defaultVmFile;
-			}
+			String vmFile = node.getProperty(vmFileKey, true, defaultVmFile);
 			param.setVmFile(vmFile);
 			//根据模板与PheroNode生成文本内容与输出路径
 			converter.convert(param);

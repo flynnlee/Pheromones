@@ -65,8 +65,7 @@ public class PheroNode{
 	}
 	
 	public boolean needOutput(){
-		String outputKey = PheroGlobalData.getInstance().getProperty("output_key");
-		if(outputKey == null) outputKey = "visible";
+		String outputKey = PheroGlobalData.getInstance().getProperty("output_key", "visible");
 		if(properties.containsKey(outputKey)){
 			return !properties.get(outputKey).equalsIgnoreCase("false");
 		}
@@ -79,8 +78,8 @@ public class PheroNode{
 	 */
 	public String getOutputPath(){
 		String projectPath = PheroGlobalData.getInstance().getProperty("project_path");
-		String relativePathKey = PheroGlobalData.getInstance().getProperty("relative_path_key");
-		String packagePath = getProperty(relativePathKey == null ? "package_path" : relativePathKey);
+		String relativePathKey = PheroGlobalData.getInstance().getProperty("relative_path_key", "package_path");
+		String packagePath = getProperty(relativePathKey);
 		if(packagePath == null){
 			String srcFolder = getProperty("src_folder");
 			if(srcFolder == null){
@@ -97,10 +96,7 @@ public class PheroNode{
 	 * @return
 	 */
 	public String getFileName(){
-		String fileNameKey = PheroGlobalData.getInstance().getProperty("filename_key");
-		if(fileNameKey == null){
-			fileNameKey = "file_name";
-		}
+		String fileNameKey = PheroGlobalData.getInstance().getProperty("filename_key", "file_name");
 		String fileName = getProperty(fileNameKey, false);
 		if(fileName == null) fileName = getAlias();
 		String extension = PheroGlobalData.getInstance().getProperty("extension");
@@ -108,21 +104,45 @@ public class PheroNode{
 	}
 	
 	/**
-	 * 获取指定属性
-	 * @param key
+	 * 获取指定参数
+	 * @param key - 参数名
 	 * @return
 	 */
 	public String getProperty(String key){
 		return getProperty(key, true);
 	}
 	
+	/**
+	 * 获取指定参数
+	 * @param key - 参数名
+	 * @param baseValid - 如果不存在，是否从父类中寻找
+	 * @return
+	 */
 	public String getProperty(String key, boolean baseValid){
-		if(properties.containsKey(key)) return properties.get(key);
-		if(baseValid && properties.containsKey("baseAlias")){
-			PheroNode node = getBasePheroNode();
-			return node.getProperty(key);
+		return getProperty(key, baseValid, null);
+	}
+	
+	/**
+	 * 获取指定参数
+	 * @param key - 参数名
+	 * @param baseValid - 如果不存在，是否从父类中寻找
+	 * @param defaultValue - 当自身[与父类]均无该参数，返回的默认值
+	 * @return
+	 */
+	public String getProperty(String key, boolean baseValid, String defaultValue){
+		String result = null;
+		if(properties.containsKey(key)){
+			result = properties.get(key);
+		}else{
+			if(baseValid && properties.containsKey("baseAlias")){
+				PheroNode node = getBasePheroNode();
+				result = node.getProperty(key, baseValid, defaultValue);
+			}
+			if(result == null){
+				result = defaultValue;
+			}
 		}
-		return null;
+		return result;
 	}
 
 	/**
@@ -145,6 +165,11 @@ public class PheroNode{
 		return baseNode;
 	}
 	
+	/**
+	 * 获取指定PheroField对象
+	 * @param fieldName - PheroField名称
+	 * @return
+	 */
 	public PheroField getField(String fieldName){
 		for(PheroField field : fieldList){
 			if(field.getName().equals(fieldName)){

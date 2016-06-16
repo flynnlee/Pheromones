@@ -30,7 +30,7 @@ public class PheroGlobalData {
 	}
 	
 	/**
-	 * 清除已加载数据
+	 * 清除已加载配置
 	 */
 	public static void clean(){
 		instance = new PheroGlobalData();
@@ -84,17 +84,27 @@ public class PheroGlobalData {
 	 * @return
 	 */
 	public String getVmfile(){
-		String rt = getProperty("vm_file");
-		return rt == null ? "template.vm" : rt;
+		return getProperty("vm_file", "template.vm");
 	}
 	
 	/**
-	 * 读取属性
-	 * @param key
+	 * 获取参数
+	 * @param key - 属性名
 	 * @return
 	 */
 	public String getProperty(String key){
 		return properties.get(key);
+	}
+	
+	/**
+	 * 获取参数
+	 * @param key - 参数名
+	 * @param defaultValue - 默认值
+	 * @return
+	 */
+	public String getProperty(String key, String defaultValue){
+		String rt = getProperty(key);
+		return rt == null ? defaultValue : rt;
 	}
 	
 	/**
