@@ -58,3 +58,80 @@ clouter-utils.jar：常用工具类集合
 |---|---|---|
 |src_folder|当全局参数relative_path_key指向的PheroNode参数未定义，则获取该参数|空字符串|
 |package|当使用src_folder时，将该参数的值作为包名，转为相对路径名，追加在src_folder之后||
+
+##示例
+
+1.将clouter-util.jar pheromones.jar引入项目
+2.在项目中添加配置文件。配置文件示例如下：
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<configure>
+	<!-- 配置参数 -->
+	<properties>
+		<!-- 目标项目路径 -->
+		<property key="project_path" value="/Users/flynn/Data/git/other/Pheromones/"/>
+		<!-- 输出编码 -->
+		<property key="encode" value="UTF-8"/>
+		<!-- 模板位置（可选，默认内置template） -->
+<!-- 		<property key="vm_file" value="template.vm"/> -->
+		<!-- 扩展名 -->
+		<property key="extension" value="java"/>
+		
+		<!-- 保存文件名的propertyKey（可选，默认file_name，不指定file_name则为$alias.$extension） -->
+<!-- 		<property key="filename_key" value=""/> -->
+		<!-- 模板位置propertyKey（可选，默认vm_file） -->
+<!-- 		<property key="vmfile_key" value="vm_file"/> -->
+		<!-- 是否output的propertyKey（可选，默认visible） -->
+<!-- 		<property key="output_key" value="visible"/> -->
+		<!-- 项目内相对路径（可选，默认package_path，输出路径不存在则由package转换） -->
+<!-- 		<property key="relative_path_key" value="test"/> -->
+	</properties>
+	
+	<nodes>
+		<node resource="structure.xml"/>
+	</nodes>
+</configure>
+
+```
+
+3.structure.xml为引用的其他文件 举例如下
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+	<node alias="Base" visible="false">
+		<properties>
+			<property key="package" value="com.clouter.pheromones"/>
+<!-- 			<property key="package_path" value="com/clouter/pheromones/"/> -->
+			<!-- 项目内sourceFolder（可选，默认空字符串） -->
+			<property key="src_folder" value="test"/>
+			<property key="file_name" value="Base"/>
+		</properties>
+	</node>
+	<node alias="TmpClass1" baseAlias="Base" parent="java.util.concurrent.atomic.AtomicBoolean" interface="com.clouter.pheromones.common.INode" file_name="TmpClass1" desc="TmpClass1">
+		<field alias="TmpClass2" name="value0" desc=""/>
+		<field alias="list" generic="float" name="value1" desc=""/>
+		<field alias="list" generic="double" name="value2" desc=""/>
+		<field alias="list" generic="byte" name="value3" desc=""/>
+		<field alias="list" generic="short" name="value4" desc=""/>
+		<field alias="list" generic="int" name="value5" desc=""/>
+		<field alias="list" generic="long" name="value6" desc=""/>
+		<field alias="list" generic="string" name="value7" desc=""/>
+		<field alias="list" generic="TmpClass2" name="value8" desc="list value"/>
+		<field alias="list" generic="boolean" name="value9" desc=""/>
+	</node>
+	
+	
+</nodes>
+```
+
+4.在项目中调用PheromonesLauncher开始生成文件
+
+```
+public class Test {
+	public static void main(String[] args) {
+		new PheromonesLauncher().launch("bin/config.xml");
+	}
+}
+```

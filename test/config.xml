@@ -22,6 +22,16 @@
 	</properties>
 	
 	<nodes>
+		<node alias="TmpClass2" baseAlias="Base" parent="" interface="com.clouter.pheromones.common.INode" file_name="TmpClass2">
+			<field alias="float" name="value0" desc="float value"/>
+			<field alias="double" name="value1" desc="double value"/>
+			<field alias="byte" name="value2" desc="byte value"/>
+			<field alias="short" name="value3" desc="short value"/>
+			<field alias="int" name="value4" desc="int value"/>
+			<field alias="long" name="value5" desc="long value"/>
+			<field alias="string" name="value6" desc="string value"/>
+			<field alias="boolean" name="value7" desc="boolean value"/>
+		</node>
 		<node resource="structure.xml"/>
 	</nodes>
 </configure>
