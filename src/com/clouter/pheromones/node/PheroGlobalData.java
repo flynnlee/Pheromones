@@ -1,16 +1,20 @@
 package com.clouter.pheromones.node;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom2.Element;
 
 import com.clouter.clouterutil.XmlUtil;
+import com.clouter.clouterutil.file.FileUtil;
 import com.clouter.pheromones.exception.PheroNodeDuplicateAlias;
 
 /**
@@ -66,6 +70,22 @@ public class PheroGlobalData {
 		Element configRoot = XmlUtil.getRoot(filePath);
 		properties = new HashMap<String, String>();
 
+		try {
+			String propertiesPath = FileUtil.getAbsolutePathInProeject("pheromones.properties");
+			if(new File(propertiesPath).exists()){
+				Properties properties = new Properties();
+				properties.load(new FileInputStream(propertiesPath));
+				log.debug("pheromones.properties loading...");
+				for(String propertyName : properties.stringPropertyNames()){
+					String propertyValue = properties.getProperty(propertyName);
+					this.properties.put(propertyName, propertyValue);
+					log.debug("key:" + propertyName + " value:" + propertyValue);
+				}
+			}
+		} catch (IOException e) {
+			log.error("load pheromones.properties fail.", e);
+		}
+		
 		baseDirPath = new File(filePath).getParent();
 		log.info("baseDirPath: " + baseDirPath);
 		
