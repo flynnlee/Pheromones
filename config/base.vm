@@ -94,28 +94,31 @@ ${inputData.globalData.getPheroNode($alias).packageName}.$alias#end
 #elseif($field.alias.equals("string"))
 		output.writeUTF($field.name);
 #elseif($field.alias.equals("list"))
-
-		output.writeShort(${field.name}.size());
-		for(#alias2SmallType($field.generic) tmp : $field.name){
+		if(${field.name} == null){
+			output.writeShort((short)0);
+		}else{
+			output.writeShort(${field.name}.size());
+			for(#alias2SmallType($field.generic) tmp : $field.name){
 #if($field.generic.equals("byte"))
-			output.writeByte(tmp);
+				output.writeByte(tmp);
 #elseif($field.generic.equals("boolean"))
-			output.writeByte(tmp ? (byte)1 : (byte)0);
+				output.writeByte(tmp ? (byte)1 : (byte)0);
 #elseif($field.generic.equals("short"))
-			output.writeShort(tmp);
+				output.writeShort(tmp);
 #elseif($field.generic.equals("int"))
-			output.writeInt(tmp);
+				output.writeInt(tmp);
 #elseif($field.generic.equals("long"))
-			output.writeLong(tmp);
+				output.writeLong(tmp);
 #elseif($field.generic.equals("float"))
-			output.writeFloat(tmp);
+				output.writeFloat(tmp);
 #elseif($field.generic.equals("double"))
-			output.writeDouble(tmp);
+				output.writeDouble(tmp);
 #elseif($field.generic.equals("string"))
-			output.writeUTF(tmp);
+				output.writeUTF(tmp);
 #else
-			tmp.write(output);
+				tmp.write(output);
 #end
+			}
 		}
 #else
 		${field.name}.write(output);
