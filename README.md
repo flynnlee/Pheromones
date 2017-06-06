@@ -1,6 +1,7 @@
 #Pheromones
 
 ##介绍
+
 Pheromones是一个基于velocity，通过xml配置文件生成多个文本文件的工具。生成的每个文本文件称为PheroNode，PheroNode具有以下特点：
 
 - 每个PheroNode内包含多个其他PheroNode或内置类型的成员，这些成员称为PheroField
