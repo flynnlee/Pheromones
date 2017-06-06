@@ -1,6 +1,6 @@
-#Pheromones
+# Pheromones
 
-##介绍
+## 介绍
 
 Pheromones是一个基于velocity，通过xml配置文件生成多个文本文件的工具。生成的每个文本文件称为PheroNode，PheroNode具有以下特点：
 
@@ -12,13 +12,13 @@ Pheromones是一个基于velocity，通过xml配置文件生成多个文本文�
 
 通过自定义模板，并在配置文件中定义Property，可灵活设定所需输出文本格式。
 
-##依赖
+## 依赖
 
 clouter-utils.jar：常用工具类集合
 
-##XML配置文件
+## XML配置文件
 
-###参数格式
+### 参数格式
 
 ```
 <properties>
@@ -27,11 +27,11 @@ clouter-utils.jar：常用工具类集合
 </properties>
 ```
 
-###配置格式细节
+### 配置格式细节
 
-####根节点 configure
+#### 根节点 configure
 
-####全局参数 properties
+#### 全局参数 properties
 
 |参数名|含义|默认值|
 |---|---|---|
@@ -44,23 +44,23 @@ clouter-utils.jar：常用工具类集合
 |relative\_path\_key|PheroNode中定义project\_path下输出文件所在相对路径名的参数名|package\_path|
 |output\_key|PheroNode中定义自身是否输出到文件的标识的参数名||
 
-####PheroNode列表
+#### PheroNode列表
 
-#####根节点 nodes
+##### 根节点 nodes
 
 - \<node resource="xxx.xml"/\> 引用其他xml文件，文件路径相对于本配置文件
 - \<node alias="xxxx">....</node>\ 定义一个PheroNode结构
 - alias为PheroNode的唯一标识
 - 参数可作为node的attribute，也可在node中定义上文中的properties格式
 
-#####PheroNode参数 properties
+##### PheroNode参数 properties
 
 |参数名|含义|默认值|
 |---|---|---|
 |src_folder|当全局参数relative_path_key指向的PheroNode参数未定义，则获取该参数|空字符串|
 |package|当使用src_folder时，将该参数的值作为包名，转为相对路径名，追加在src_folder之后||
 
-##示例
+## 示例
 
 1.将clouter-util.jar pheromones.jar引入项目
 2.在项目中添加配置文件。配置文件示例如下：
